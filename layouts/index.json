@@ -31,9 +31,10 @@
         "category": "{{ .category }}"
       }
     {{ end }}
-  ],
-
-  
+  ],{{ if $active }}
+  "unresolvedIssues": [
+    {{ range $incident := $incidents }}{{ if eq $incident.Params.resolved false }}{{ jsonify (dict "prefix" "    "  "indent" "  ") $incident.Params}}{{ end }}{{ end }}
+  ],{{ end }}
   "buildDate": "{{ now.Format "2006-01-02" }}",
   "buildTime": "{{ now.Format "15:04" }}",
   "buildTimezone": "{{ now.Format "MST" }}",
@@ -54,6 +55,5 @@
   "colorDown": "{{ .Site.Params.Down }}",
   "colorNotice": "{{ .Site.Params.Notice }}",
   "alwaysKeepBrandColor": "{{ .Site.Params.alwaysKeepBrandColor }}",
-
   "googleAnalytics": "{{ .Site.Params.googleAnalytics }}"
 }
